@@ -7,3 +7,27 @@
 #greeting-container {
   margin-top: 20px;
 }
+
+ul {
+    padding: 0;
+    list-style-type: none;
+}
+
+button {
+    border: 1px solid white;
+    border-radius: 12px;
+    padding: 16px;
+    background-color: green;
+    color: white;
+    font-weight: 20dp;
+}
+
+
+#randomImg {
+    width: 650px;
+}
+
+#logo {
+    width: 100px;
+    height: 100px;
+}

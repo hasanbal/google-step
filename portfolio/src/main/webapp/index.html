@@ -2,17 +2,29 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>My Portfolio</title>
+    <title>Hasan Bal</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
   <body>
     <div id="content">
-      <h1>My Portfolio</h1>
-      <p>This is my portfolio.</p>
-      <p>Click here to get a random message:</p>
-      <button onclick="addRandomGreeting()">Hello</button>
-      <div id="greeting-container"></div>
+        <h1 id="title">Hasan Bal</h1>
+        <h5 id="subtitle">Computer Engineering Student</h5>
+        <hr>
+        <h4>Short Brief</h4>
+        <p>Hi, I'm Hasan from Turkey. I'm computer engineering student at METU.<br>I love competitive programming, listening music and making new friends.</p>
+        <h4>Some of my profiles:</h4>
+        <ul><a href="https://linkedin.com/in/hasanbal" target="_blank"><img id="logo" src="images/linkedin.png"></a></ul>
+        <ul><a href="https://github.com/hasanbal" target="_blank"><img id="logo" src="images/github.png"></a></ul>
+        <ul><a href="https://instagram.com/haasanbal" target="_blank"><img id="logo" src="images/instagram.png"></a></ul>
+
+        <hr>
+
+        <h4>Get Random Image From My Gallery</h4>
+        <button onclick="getRandomImage();">Pick Random Image</button><br><br>       
+        <img id="randomImg" src="images/ig1.png"><br>
+
+
     </div>
   </body>
 </html>

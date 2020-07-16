@@ -26,3 +26,10 @@ function addRandomGreeting() {
   const greetingContainer = document.getElementById('greeting-container');
   greetingContainer.innerText = greeting;
 }
+
+function getRandomImage(){
+    const imageId = Math.floor(Math.random()*5) + 1;
+    const imageTag = document.getElementById('randomImg');
+
+    imageTag.src = "images/ig"+imageId.toString()+".png";
+}
