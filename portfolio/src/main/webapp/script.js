@@ -33,3 +33,15 @@ function getRandomImage(){
 
     imageTag.src = "images/ig"+imageId.toString()+".png";
 }
+
+function popupDetail(id){
+    const detail = document.getElementById('detail-'+id.toString());
+    const button = document.getElementById('button-'+id.toString());
+    if(detail.style.visibility == "hidden"){
+        detail.style.visibility = "visible";
+        button.innerHTML = "Hide Details";
+    }else{
+        detail.style.visibility = "hidden";
+        button.innerHTML = "Show Details";
+    }
+}
