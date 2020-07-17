@@ -26,3 +26,22 @@ function addRandomGreeting() {
   const greetingContainer = document.getElementById('greeting-container');
   greetingContainer.innerText = greeting;
 }
+
+function getRandomImage(){
+    const imageId = Math.floor(Math.random()*5) + 1;
+    const imageTag = document.getElementById('randomImg');
+
+    imageTag.src = "images/ig"+imageId.toString()+".png";
+}
+
+function popupDetail(id){
+    const detail = document.getElementById('detail-'+id.toString());
+    const button = document.getElementById('button-'+id.toString());
+    if(detail.style.visibility == "hidden"){
+        detail.style.visibility = "visible";
+        button.innerHTML = "Hide Details";
+    }else{
+        detail.style.visibility = "hidden";
+        button.innerHTML = "Show Details";
+    }
+}
