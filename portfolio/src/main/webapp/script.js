@@ -36,8 +36,9 @@ function getRandomImage(){
 
 function popupDetail(id){
     const detail = document.getElementById('detail-'+id.toString());
-    const button = document.getElementById('button-'+id.toString());
-    if(detail.style.visibility == "hidden"){
+    const button = document.getElementById('button-'+id.toString()); 
+    
+    if(button.innerHTML == "Show Details"){
         detail.style.visibility = "visible";
         button.innerHTML = "Hide Details";
     }else{
