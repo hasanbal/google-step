@@ -12,21 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
- * Adds a random greeting to the page.
- */
-function addRandomGreeting() {
-  const greetings =
-      ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
-
-  // Pick a random greeting.
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
-
-  // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
-  greetingContainer.innerText = greeting;
-}
-
 function getRandomImage(){
     const imageId = Math.floor(Math.random()*5) + 1;
     const imageTag = document.getElementById('randomImg');
@@ -45,21 +30,6 @@ function popupDetail(id){
         detail.style.visibility = "hidden";
         button.innerHTML = "Show Details";
     }
-}
-
-async function getFromServer() {
-    const response = await fetch('/data');
-    var comments = await response.text();
-    comments = JSON.parse(comments);
-
-    const commentsListElement = document.getElementById('comments');
-    commentsListElement.innerHTML = '';
-    commentsListElement.appendChild(
-        createListElement('Comment1: ' + comments[0]));
-    commentsListElement.appendChild(
-        createListElement('Comment2: ' + comments[1]));
-    commentsListElement.appendChild(
-        createListElement('Comment3: ' + comments[2]));
 }
 
 function createListElement(text) {
