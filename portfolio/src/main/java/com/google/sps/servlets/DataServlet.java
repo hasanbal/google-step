@@ -45,7 +45,7 @@ public class DataServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String comment = getComment(request);
         boolean readable = false;
-        if(comment.isEmpty()){
+        if (comment.isEmpty()) {
             response.setContentType("text/html");
             response.getWriter().println("Please enter a non-empty comment.");
             return;
