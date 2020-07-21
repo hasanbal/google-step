@@ -27,15 +27,32 @@ import java.util.Date;
 import java.util.TimeZone;
 import java.util.ArrayList;
 import com.google.gson.Gson;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/comments")
 public class DataServlet extends HttpServlet {
   
-    private ArrayList<String> comments = new ArrayList<String>();
   
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Query query = new Query("Comment").addSort("timestamp" , SortDirection.ASCENDING);
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        PreparedQuery results = datastore.prepare(query);
+        ArrayList<String> comments = new ArrayList<String>();
+
+        for (Entity entity : results.asIterable()) {
+            String comment = (String) entity.getProperty("comment");
+            long timestamp = (long) entity.getProperty("timestamp");
+
+            comments.add(comment);
+        }
+
         response.setContentType("application/json");
         String json = new Gson().toJson(comments);
         response.getWriter().println(json);
@@ -45,6 +62,10 @@ public class DataServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String comment = getComment(request);
         boolean readable = false;
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        Entity commentEntity = new Entity("Comment");
+        long timestamp = System.currentTimeMillis();
+
         if (comment.isEmpty()) {
             response.setContentType("text/html");
             response.getWriter().println("Please enter a non-empty comment.");
@@ -63,7 +84,9 @@ public class DataServlet extends HttpServlet {
         }
 
 
-        comments.add(comment);
+        commentEntity.setProperty("comment" , comment);
+        commentEntity.setProperty("timestamp" , timestamp);
+        datastore.put(commentEntity);
         response.sendRedirect("/index.html");
     }
 
