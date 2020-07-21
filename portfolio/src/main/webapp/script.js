@@ -46,3 +46,36 @@ function popupDetail(id){
         button.innerHTML = "Show Details";
     }
 }
+
+async function getFromServer() {
+    const response = await fetch('/data');
+    var comments = await response.text();
+    comments = JSON.parse(comments);
+
+    const commentsListElement = document.getElementById('comments');
+    commentsListElement.innerHTML = '';
+    commentsListElement.appendChild(
+        createListElement('Comment1: ' + comments[0]));
+    commentsListElement.appendChild(
+        createListElement('Comment2: ' + comments[1]));
+    commentsListElement.appendChild(
+        createListElement('Comment3: ' + comments[2]));
+}
+
+function createListElement(text) {
+    const liElement = document.createElement('li');
+    liElement.innerText = text;
+    return liElement;
+}
+
+async function loadComments(){
+    const response = await fetch("/comments");
+    var comments = await response.text();
+    comments = JSON.parse(comments);
+
+    const commentsListElement = document.getElementById('comments');
+    commentsListElement.innerHTML = '';
+    for(var i=0;i<comments.length;i++){
+        commentsListElement.appendChild(createListElement("Comment"+i.toString() + ": " + comments[i]));
+    }
+}
