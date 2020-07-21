@@ -51,7 +51,7 @@ public class DataServlet extends HttpServlet {
             return;
         }
         
-        for (int i=0; i < comment.length(); i++) {
+        for (int i = 0; i < comment.length(); i++) {
             if (comment.charAt(i) != ' ') {
                 readable = true;
             }

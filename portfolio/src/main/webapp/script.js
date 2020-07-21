@@ -13,15 +13,15 @@
 // limitations under the License.
 
 function getRandomImage() {
-    const imageId = Math.floor(Math.random()*5) + 1;
+    const imageId = Math.floor(Math.random() * 5) + 1;
     const imageTag = document.getElementById('randomImg');
 
     imageTag.src = "images/ig" + imageId.toString() + ".png";
 }
 
 function popupDetail(id) {
-    const detail = document.getElementById('detail-'+id.toString());
-    const button = document.getElementById('button-'+id.toString()); 
+    const detail = document.getElementById('detail-' + id.toString());
+    const button = document.getElementById('button-' + id.toString()); 
     
     if (button.innerHTML == "Show Details") {
         detail.style.visibility = "visible";
@@ -46,7 +46,7 @@ async function loadComments() {
     const commentsListElement = document.getElementById('comments');
     commentsListElement.innerHTML = '';
     
-    for (var i=0; i<comments.length; i++) {
-        commentsListElement.appendChild(createListElement("Comment"+i.toString() + ": " + comments[i]));
+    for (var i = 0; i < comments.length; i++) {
+        commentsListElement.appendChild(createListElement("Comment" + i.toString() + ": " + comments[i]));
     }
 }
