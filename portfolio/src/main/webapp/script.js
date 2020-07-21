@@ -12,21 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-function getRandomImage(){
+function getRandomImage() {
     const imageId = Math.floor(Math.random()*5) + 1;
     const imageTag = document.getElementById('randomImg');
 
-    imageTag.src = "images/ig"+imageId.toString()+".png";
+    imageTag.src = "images/ig" + imageId.toString() + ".png";
 }
 
-function popupDetail(id){
+function popupDetail(id) {
     const detail = document.getElementById('detail-'+id.toString());
     const button = document.getElementById('button-'+id.toString()); 
     
-    if(button.innerHTML == "Show Details"){
+    if (button.innerHTML == "Show Details") {
         detail.style.visibility = "visible";
         button.innerHTML = "Hide Details";
-    }else{
+    } else {
         detail.style.visibility = "hidden";
         button.innerHTML = "Show Details";
     }
@@ -38,14 +38,15 @@ function createListElement(text) {
     return liElement;
 }
 
-async function loadComments(){
+async function loadComments() {
     const response = await fetch("/comments");
     var comments = await response.text();
     comments = JSON.parse(comments);
 
     const commentsListElement = document.getElementById('comments');
     commentsListElement.innerHTML = '';
-    for(var i=0;i<comments.length;i++){
+    
+    for (var i=0; i<comments.length; i++) {
         commentsListElement.appendChild(createListElement("Comment"+i.toString() + ": " + comments[i]));
     }
 }

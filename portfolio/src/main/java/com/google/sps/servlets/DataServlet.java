@@ -51,12 +51,12 @@ public class DataServlet extends HttpServlet {
             return;
         }
         
-        for(int i=0;i < comment.length(); i++){
-            if(comment.charAt(i) != ' '){
+        for (int i=0; i < comment.length(); i++) {
+            if (comment.charAt(i) != ' ') {
                 readable = true;
             }
         }
-        if(readable == false){
+        if (readable == false) {
             response.setContentType("text/html");
             response.getWriter().println("Please enter readable comment.");
             return;
@@ -67,7 +67,7 @@ public class DataServlet extends HttpServlet {
         response.sendRedirect("/index.html");
     }
 
-    private String getComment(HttpServletRequest request){
+    private String getComment(HttpServletRequest request) {
         String comment = request.getParameter("comment");
         return comment;
     }
