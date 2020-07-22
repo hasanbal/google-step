@@ -13,55 +13,54 @@
 // limitations under the License.
 
 function getRandomImage() {
-	const imageId = Math.floor(Math.random() * 5) + 1;
-	const imageTag = document.getElementById('randomImg');
+  const imageId = Math.floor(Math.random() * 5) + 1;
+  const imageTag = document.getElementById('randomImg');
 
-	imageTag.src = 'images/ig' + imageId.toString() + '.png';
+  imageTag.src = 'images/ig' + imageId.toString() + '.png';
 }
 
 function popupDetail(id) {
-	const detail = document.getElementById('detail-' + id.toString());
-	const button = document.getElementById('button-' + id.toString());
+  const detail = document.getElementById('detail-' + id.toString());
+  const button = document.getElementById('button-' + id.toString());
 
-	if (button.innerHTML == 'Show Details') {
-		detail.style.visibility = 'visible';
-		button.innerHTML = 'Hide Details';
-	} else {
-		detail.style.visibility = 'hidden';
-		button.innerHTML = 'Show Details';
-	}
+  if (button.innerHTML == 'Show Details') {
+    detail.style.visibility = 'visible';
+    button.innerHTML = 'Hide Details';
+  } else {
+    detail.style.visibility = 'hidden';
+    button.innerHTML = 'Show Details';
+  }
 }
 
 function createListElement(text) {
-	const liElement = document.createElement('li');
-	liElement.innerText = text;
-	return liElement;
+  const liElement = document.createElement('li');
+  liElement.innerText = text;
+  return liElement;
 }
 
 async function loadComments(limit = -1) {
-	const response = await fetch('/comments');
-	var comments = await response.text();
-	comments = JSON.parse(comments);
+  const response = await fetch('/comments');
+  var comments = await response.text();
+  comments = JSON.parse(comments);
 
-	const commentsListElement = document.getElementById('comments');
-	commentsListElement.innerHTML = '';
+  const commentsListElement = document.getElementById('comments');
+  commentsListElement.innerHTML = '';
 
+  if (limit == -1) {
+    limit = comments.length;
+  } else {
+    limit = Math.min(limit, comments.length);
+  }
 
-	if (limit == -1) {
-		limit = comments.length;
-	} else {
-		limit = Math.min(limit, comments.length);
-	}
+  for (var i = comments.length - limit; i < comments.length; i++) {
+    comments[i] = JSON.parse(comments[i]);
 
-	for (var i = comments.length - limit; i < comments.length; i++) {
-		comments[i] = JSON.parse(comments[i]);
-
-		commentsListElement.appendChild(createListElement(comments[i].username + ': ' + comments[i].comment));
-	}
+    commentsListElement.appendChild(createListElement(comments[i].username + ': ' + comments[i].comment));
+  }
 }
 
 function limitComments(limitObject) {
-	const limit = limitObject.value;
+  const limit = limitObject.value;
 
-	loadComments(limit);
+  loadComments(limit);
 } 
