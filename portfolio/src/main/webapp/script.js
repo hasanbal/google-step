@@ -38,7 +38,7 @@ function createListElement(text) {
     return liElement;
 }
 
-async function loadComments() {
+async function loadComments(limit = -1) {
     const response = await fetch("/comments");
     var comments = await response.text();
     comments = JSON.parse(comments);
@@ -46,7 +46,22 @@ async function loadComments() {
     const commentsListElement = document.getElementById('comments');
     commentsListElement.innerHTML = '';
     
-    for (var i = 0; i < comments.length; i++) {
-        commentsListElement.appendChild(createListElement("Comment" + i.toString() + ": " + comments[i]));
+
+    if (limit == -1) {
+        limit = comments.length;
+    } else {
+        limit = Math.min(limit , comments.length);
+    }
+
+    for (var i = comments.length - limit; i < comments.length; i++) {
+        comments[i] = JSON.parse(comments[i]);
+        
+        commentsListElement.appendChild(createListElement(comments[i].username + ": " + comments[i].comment));
     }
 }
+
+function limitComments(limitObject) {
+    const limit = limitObject.value;
+    
+    loadComments(limit);
+} 

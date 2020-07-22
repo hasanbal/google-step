@@ -48,9 +48,13 @@ public class DataServlet extends HttpServlet {
 
         for (Entity entity : results.asIterable()) {
             String comment = (String) entity.getProperty("comment");
+            String username = (String) entity.getProperty("username");
             long timestamp = (long) entity.getProperty("timestamp");
 
-            comments.add(comment);
+            Comment curComment = new Comment(username , comment , timestamp);
+            String commentJson = new Gson().toJson(curComment);
+            
+            comments.add(commentJson);
         }
 
         response.setContentType("application/json");
@@ -61,31 +65,44 @@ public class DataServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String comment = getComment(request);
-        boolean readable = false;
+        String username = getUsername(request);
+
+        boolean readableComment = false;
+        boolean readableUsername = false;
+
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         Entity commentEntity = new Entity("Comment");
         long timestamp = System.currentTimeMillis();
 
-        if (comment.isEmpty()) {
+        if (comment.isEmpty() || username.isEmpty()) {
             response.setContentType("text/html");
-            response.getWriter().println("Please enter a non-empty comment.");
+            response.getWriter().println("Please enter a non-empty comment and username.");
             return;
         }
         
         for (int i = 0; i < comment.length(); i++) {
             if (comment.charAt(i) != ' ') {
-                readable = true;
+                readableComment = true;
             }
         }
-        if (readable == false) {
+
+        for (int i = 0; i < username.length(); i++) {
+            if (username.charAt(i) != ' ') {
+                readableUsername = true;
+            }
+        } 
+
+        if (readableComment == false || readableUsername == false) {
             response.setContentType("text/html");
-            response.getWriter().println("Please enter readable comment.");
+            response.getWriter().println("Please enter readable comment and username.");
             return;
         }
 
 
         commentEntity.setProperty("comment" , comment);
+        commentEntity.setProperty("username" , username);
         commentEntity.setProperty("timestamp" , timestamp);
+
         datastore.put(commentEntity);
         response.sendRedirect("/index.html");
     }
@@ -93,6 +110,11 @@ public class DataServlet extends HttpServlet {
     private String getComment(HttpServletRequest request) {
         String comment = request.getParameter("comment");
         return comment;
+    }
+
+    private String getUsername(HttpServletRequest request) {
+        String username = request.getParameter("username");
+        return username;
     }
 
 }

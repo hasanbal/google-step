@@ -21,10 +21,22 @@
         <hr>
         <h4>Comments</h4>
         <ul id="comments"></ul>
-        <hr>
         <form method="POST" action="/comments">
+        <span> View Latest
+        <select name="limit" id="limit" onchange="limitComments(this);">
+          <option value="5">5</option>
+          <option value="10" selected="selected">10</option>
+          <option value="20">20</option>
+          <option value="50">50</option>
+        </select>
+        Comments. </span>
+        <hr>
+
+
+        <span>Username:<br></span> <input type="text" name="username" required><br>
+        <br><span>Comment:<br></span>
         <textarea name="comment"></textarea><br>
-        <input type="submit" value="Add Comment">
+        <br><input type="submit" value="Add Comment">
         </form>
         <hr>
         <h4>My Projects</h4>
