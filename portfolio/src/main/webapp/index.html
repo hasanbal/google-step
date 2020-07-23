@@ -1,39 +1,38 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-	<meta charset="UTF-8">
-	<title>Hasan Bal</title>
-	<link rel="stylesheet" href="style.css">
-	<script src="script.js"></script>
-</head>
+	<head>
+		<meta charset="UTF-8">
+		<title>Hasan Bal</title>
+		<link rel="stylesheet" href="style.css">
+		<script src="script.js"></script>
+	</head>
 
-<body onload="loadComments();">
-	<div id="content">
-		<h1 id="title">Hasan Bal</h1>
-		<h5 id="subtitle">Computer Engineering Student</h5>
-		<hr>
-		<h4>Short Brief</h4>
-		<p>Hi, I'm Hasan from Turkey. I'm computer engineering student at
+	<body onload="loadComments();">
+		<div id="content">
+			<h1 id="title">Hasan Bal</h1>
+			<h5 id="subtitle">Computer Engineering Student</h5>
+			<hr>
+			<h4>Short Brief</h4>
+			<p>Hi, I'm Hasan from Turkey. I'm computer engineering student at
 			METU.<br>I love competitive programming, listening music and making new friends.</p>
 			<h4>Some of my profiles:</h4>
-			<ul><a href="https://linkedin.com/in/hasanbal" target="_blank" rel="noopener"><img id="logo" src="images/linkedin.png" alt="img"></a>
-					<a href="https://github.com/hasanbal" target="_blank" rel="noopener"><img id="logo" src="images/github.png" alt="img"></a>
-						<a href="https://instagram.com/haasanbal"
-							target="_blank" rel="noopener"><img id="logo" src="images/instagram.png" alt="img"></a></ul>
+			<a href="https://linkedin.com/in/hasanbal" target="_blank" rel="noopener"><img class="logo" src="images/linkedin.png" alt="img"></a>
+			<a href="https://github.com/hasanbal" target="_blank" rel="noopener"><img class="logo" src="images/github.png" alt="img"></a>
+			<a href="https://instagram.com/haasanbal" target="_blank" rel="noopener"><img class="logo" src="images/instagram.png" alt="img"></a>
 
 			<hr>
 			<h4>Comments</h4>
 			<ul id="comments"></ul>
 			<form method="POST" action="/comments">
 				<span> View Latest
-        <select name="limit" id="limit" onchange="limitComments(this);">
-          <option value="5">5</option>
-          <option value="10" selected="selected">10</option>
-          <option value="20">20</option>
-          <option value="50">50</option>
-        </select>
-        Comments. </span>
+				<select name="limit" id="limit" onchange="limitComments(this);">
+					<option value="5">5</option>
+					<option value="10" selected="selected">10</option>
+					<option value="20">20</option>
+					<option value="50">50</option>
+				</select>
+				Comments. </span>
 				<hr>
 
 
@@ -41,77 +40,75 @@
 				<br><span>Comment:<br></span>
 				<textarea name="comment"></textarea><br>
 				<br><input type="submit" value="Add Comment">
-        </form>
+			</form>
+			<hr>
+			<h4>My Projects</h4>
+			<div class="project">
+				<p class="project-header">MyFilmList</p>
+				<strong>Node.js WebApp for listing watched films and comparing with your friends.<br></strong><br>
+				<button onclick="popupDetail(1);" id="button-1">Show Details</button>
+
+				<p id="detail-1">
+					MyFilmList is a Web and IOS app.<br>
+
+					You can add films/series that you watched, will wath or watching.<br>
+
+					After creating your profile, you can use our Match Algorithm to calculate your MyFilmList score with your friends.<br>
+
+					The algorithm calculates Euclidean distance between genres count.<br>
+
+					<br><a href="https://github.com/hasanbal/MyFilmList" target="_blank" rel="noopener">GitHub Link</a>
+				</p>
+
 				<hr>
-				<h4>My Projects</h4>
-				<div class="project">
-					<p class="project-header">MyFilmList</p>
-					<strong>Node.js WebApp for listing watched films and comparing with your friends.<br></strong><br>
-					<button onclick="popupDetail(1);" id="button-1">Show Details</button>
+			</div>
+			<div class="project">
+				<p class="project-header">MusicTwin</p>
+				<strong>MusicTwin is a web app that finds your music twin by using Spotify.<br></strong><br>
+				<button onclick="popupDetail(2);" id="button-2">Show Details</button>
 
-					<p id="detail-1">
-						MyFilmList is a Web and IOS app.<br>
+				<p id="detail-2">
+					You can visit your MusicTwin's profile and discover new artists, playlists, tracks.<br>
+					Live Demo: <a href="https://musictwin.xyz" target="_blank" rel="noopener">https://musictwin.xyz</a><br>
 
-            You can add films/series that you watched, will wath or watching.<br>
+					<br><a href="https://github.com/hasanbal/MusicTwin" target="_blank" rel="noopener"
+					>GitHub Link</a>
+				</p>
 
-            After creating your profile, you can use our Match Algorithm to calculate your MyFilmList score with your friends.<br>
+				<hr>
+			</div>
 
-            The algorithm calculates Euclidean distance between genres count.<br>
+			<div class="project">
+				<p class="project-header">WhenShouldILeaveHome</p>
+				<strong>This is an API which helps you to choice when you should leave at home for a flight.<br></strong><br>
+				<button onclick="popupDetail(3);" id="button-3">Show Details</button>
 
-						<br><a href="https://github.com/hasanbal/MyFilmList" target="_blank" rel="noopener">GitHub Link</a>
-					</p>
+				<p id="detail-3">
+					Also, this API is our Hackathon Project and we placed 2nd among Turkey in the Hackathon
+					Competition.<br>
+					<br><a href="https://github.com/hasanbal/WhenShouldILeaveHome" target="_blank" rel="noopener">GitHub Link</a>
+				</p>
 
-					<hr>
-				</div>
-				<div class="project">
-					<p class="project-header">MusicTwin</p>
-					<strong>MusicTwin is a web app that finds your music twin by using Spotify.<br></strong><br>
-					<button onclick="popupDetail(2);" id="button-2">Show Details</button>
+				<hr>
+			</div>
+			<div class="project">
+				<p class="project-header">LOChat</p>
+				<strong>LOChat is a Native Location-Based Anonymous Chat App.<br></strong><br>
+				<button onclick="popupDetail(4);" id="button-4">Show Details</button>
 
-					<p id="detail-2">
-						You can visit your MusicTwin's profile and discover new artists, playlists, tracks.<br>
-            Live Demo: <a href="https://musictwin.xyz" target="_blank" rel="noopener">https://musictwin.xyz</a><br>
+				<p id="detail-4">
+					You can chat anonymously with users near you.<br>
+					You can see messages that sent at most 1000 meters away from you.<br>
+					Also, your messages can visible only at most 1000 meters far users from you.<br>
+					<br><a href="https://github.com/hasanbal/LOchat-IOS" target="_blank" rel="noopener">GitHub Link</a>
+				</p>
+				<hr>
+			</div>
 
-						<br><a href="https://github.com/hasanbal/MusicTwin" target="_blank" rel="noopener"
-						>GitHub Link</a>
-					</p>
-
-					<hr>
-				</div>
-
-				<div class="project">
-					<p class="project-header">WhenShouldILeaveHome</p>
-					<strong>This is an API which helps you to choice when you should leave at home for a flight.<br></strong><br>
-					<button onclick="popupDetail(3);" id="button-3">Show Details</button>
-
-					<p id="detail-3">
-						Also, this API is our Hackathon Project and we placed 2nd among Turkey in the Hackathon
-						Competition.<br>
-						<br><a href="https://github.com/hasanbal/WhenShouldILeaveHome" target="_blank" rel="noopener">GitHub Link</a>
-					</p>
-
-					<hr>
-				</div>
-				<div class="project">
-					<p class="project-header">LOChat</p>
-					<strong>LOChat is a Native Location-Based Anonymous Chat App.<br></strong><br>
-					<button onclick="popupDetail(4);" id="button-4">Show Details</button>
-
-					<p id="detail-4">
-						You can chat anonymously with users near you.<br>
-            You can see messages that sent at most 1000 meters away from you.<br>
-            Also, your messages can visible only at most 1000 meters far users from you.<br>
-						<br><a href="https://github.com/hasanbal/LOchat-IOS" target="_blank" rel="noopener" rel="noopener">GitHub Link</a>
-					</p>
-					<hr>
-				</div>
-
-				<h4>Get Random Image From My Gallery</h4>
-				<button onclick="getRandomImage();">Pick Random Image</button><br><br>
-				<img id="randomImg" src="images/ig1.png" alt="ig"><br>
-
-
-    </div>
-</body>
+			<h4>Get Random Image From My Gallery</h4>
+			<button onclick="getRandomImage();">Pick Random Image</button><br><br>
+			<img id="randomimg" src="images/ig1.png" alt="ig"><br>
+		</div>
+	</body>
 
 </html>

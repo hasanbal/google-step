@@ -31,15 +31,14 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/comments")
 public class DataServlet extends HttpServlet {
-  
-  
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Query query = new Query("Comment").addSort("timestamp", SortDirection.ASCENDING);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
     ArrayList<String> comments = new ArrayList<String>();
-    
+
     for (Entity entity : results.asIterable()) {
       String comment = (String) entity.getProperty("comment");
       String username = (String) entity.getProperty("username");
@@ -54,7 +53,7 @@ public class DataServlet extends HttpServlet {
     response.setContentType("application/json");
     String json = new Gson().toJson(comments);
     response.getWriter().println(json);
-    }
+  }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -67,13 +66,13 @@ public class DataServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Entity commentEntity = new Entity("Comment");
     long timestamp = System.currentTimeMillis();
-    
-		if (comment.isEmpty() || username.isEmpty()) {
+
+    if (comment.isEmpty() || username.isEmpty()) {
       response.setContentType("text/html");
       response.getWriter().println("Please enter a non-empty comment and username.");
       return;
     }
-        
+   
     for (int i = 0; i < comment.length(); i++) {
       if (comment.charAt(i) != ' ') {
         readableComment = true;

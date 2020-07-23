@@ -12,15 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/*exported getRandomImage, popupDetail, limitComments */
+/* exported getRandomImage, popupDetail, limitComments */
 
+/* Get random image from gallery */
 function getRandomImage() {
   const imageId = Math.floor(Math.random() * 5) + 1;
-  const imageTag = document.getElementById('randomImg');
+  const imageTag = document.getElementById('randomimg');
 
   imageTag.src = 'images/ig' + imageId.toString() + '.png';
 }
 
+/* Show/hide popup */
 function popupDetail(id) {
   const detail = document.getElementById('detail-' + id.toString());
   const button = document.getElementById('button-' + id.toString());
@@ -34,12 +36,14 @@ function popupDetail(id) {
   }
 }
 
+/* Create list element */
 function createListElement(text) {
   const liElement = document.createElement('li');
   liElement.innerText = text;
   return liElement;
 }
 
+/* Load comments from server */
 async function loadComments(limit = -1) {
   const response = await fetch('/comments');
   const comments = await response.text();
@@ -54,7 +58,7 @@ async function loadComments(limit = -1) {
     limit = Math.min(limit, commentsJson.length);
   }
 
-  for (var i = commentsJson.length - limit; i < commentsJson.length; i++) {
+  for (let i = commentsJson.length - limit; i < commentsJson.length; i++) {
     commentsJson[i] = JSON.parse(commentsJson[i]);
 
     const element = commentsJson[i].username + ': ' + commentsJson[i].comment;
@@ -62,6 +66,7 @@ async function loadComments(limit = -1) {
   }
 }
 
+/* Limit comments count. */
 function limitComments(limitObject) {
   const limit = limitObject.value;
 
