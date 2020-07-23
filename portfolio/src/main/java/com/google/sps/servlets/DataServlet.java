@@ -46,7 +46,7 @@ public class DataServlet extends HttpServlet {
 
       Comment curComment = new Comment(username, comment, timestamp);
       String commentJson = new Gson().toJson(curComment);
-            
+
       comments.add(commentJson);
     }
 
@@ -72,7 +72,7 @@ public class DataServlet extends HttpServlet {
       response.getWriter().println("Please enter a non-empty comment and username.");
       return;
     }
-   
+
     for (int i = 0; i < comment.length(); i++) {
       if (comment.charAt(i) != ' ') {
         readableComment = true;
@@ -83,14 +83,13 @@ public class DataServlet extends HttpServlet {
       if (username.charAt(i) != ' ') {
         readableUsername = true;
       }
-    } 
+    }
 
     if (readableComment == false || readableUsername == false) {
       response.setContentType("text/html");
       response.getWriter().println("Please enter readable comment and username.");
       return;
     }
-
 
     commentEntity.setProperty("comment", comment);
     commentEntity.setProperty("username", username);

@@ -12,17 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/* exported getRandomImage, popupDetail, limitComments */
+/* eslint-disable no-unused-vars */
 
-/* Get random image from gallery */
+/** Get random image from gallery */
 function getRandomImage() {
   const imageId = Math.floor(Math.random() * 5) + 1;
   const imageTag = document.getElementById('randomimg');
 
   imageTag.src = 'images/ig' + imageId.toString() + '.png';
 }
-
-/* Show/hide popup */
+/** Show/hide popup
+* @param {int} id popup section id
+*/
 function popupDetail(id) {
   const detail = document.getElementById('detail-' + id.toString());
   const button = document.getElementById('button-' + id.toString());
@@ -36,14 +37,19 @@ function popupDetail(id) {
   }
 }
 
-/* Create list element */
+/** Create list element
+* @param {string} text list elements string
+* @return {object} list element
+*/
 function createListElement(text) {
   const liElement = document.createElement('li');
   liElement.innerText = text;
   return liElement;
 }
 
-/* Load comments from server */
+/** Load comments from server
+* @param {int} limit limit of comments count
+*/
 async function loadComments(limit = -1) {
   const response = await fetch('/comments');
   const comments = await response.text();
@@ -66,7 +72,9 @@ async function loadComments(limit = -1) {
   }
 }
 
-/* Limit comments count. */
+/** Limit comments count.
+* @param {object} limitObject get value of limitObject
+*/
 function limitComments(limitObject) {
   const limit = limitObject.value;
 
