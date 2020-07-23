@@ -108,5 +108,4 @@ public class DataServlet extends HttpServlet {
     String username = request.getParameter("username");
     return username;
   }
-
 }
