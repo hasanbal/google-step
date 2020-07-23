@@ -14,18 +14,6 @@
 
 package com.google.sps.servlets;
 
-import java.io.IOException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.time.format.DateTimeFormatter;  
-import java.time.LocalDateTime;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
-import java.util.ArrayList;
 import com.google.gson.Gson;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -33,6 +21,18 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import java.io.IOException;
+import java.time.format.DateTimeFormatter;  
+import java.time.LocalDateTime;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+import java.util.ArrayList;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/comments")
@@ -41,17 +41,17 @@ public class DataServlet extends HttpServlet {
   
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Query query = new Query("Comment").addSort("timestamp" , SortDirection.ASCENDING);
+    Query query = new Query("Comment").addSort("timestamp", SortDirection.ASCENDING);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
     ArrayList<String> comments = new ArrayList<String>();
     
-		for (Entity entity : results.asIterable()) {
+	  for (Entity entity : results.asIterable()) {
       String comment = (String) entity.getProperty("comment");
       String username = (String) entity.getProperty("username");
       long timestamp = (long) entity.getProperty("timestamp");
 
-      Comment curComment = new Comment(username , comment , timestamp);
+      Comment curComment = new Comment(username, comment, timestamp);
       String commentJson = new Gson().toJson(curComment);
             
       comments.add(commentJson);
@@ -99,9 +99,9 @@ public class DataServlet extends HttpServlet {
     }
 
 
-    commentEntity.setProperty("comment" , comment);
-    commentEntity.setProperty("username" , username);
-    commentEntity.setProperty("timestamp" , timestamp);
+    commentEntity.setProperty("comment", comment);
+    commentEntity.setProperty("username", username);
+    commentEntity.setProperty("timestamp", timestamp);
 
     datastore.put(commentEntity);
     response.sendRedirect("/index.html");
