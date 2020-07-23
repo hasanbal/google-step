@@ -14,20 +14,14 @@
 
 package com.google.sps.servlets;
 
-import com.google.gson.Gson;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.gson.Gson;
 import java.io.IOException;
-import java.time.format.DateTimeFormatter;  
-import java.time.LocalDateTime;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
 import java.util.ArrayList;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -46,7 +40,7 @@ public class DataServlet extends HttpServlet {
     PreparedQuery results = datastore.prepare(query);
     ArrayList<String> comments = new ArrayList<String>();
     
-	  for (Entity entity : results.asIterable()) {
+    for (Entity entity : results.asIterable()) {
       String comment = (String) entity.getProperty("comment");
       String username = (String) entity.getProperty("username");
       long timestamp = (long) entity.getProperty("timestamp");

@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*exported getRandomImage, popupDetail, limitComments */
+
 function getRandomImage() {
   const imageId = Math.floor(Math.random() * 5) + 1;
   const imageTag = document.getElementById('randomImg');
@@ -40,22 +42,23 @@ function createListElement(text) {
 
 async function loadComments(limit = -1) {
   const response = await fetch('/comments');
-  var comments = await response.text();
-  comments = JSON.parse(comments);
+  const comments = await response.text();
+  const commentsJson = JSON.parse(comments);
 
   const commentsListElement = document.getElementById('comments');
   commentsListElement.innerHTML = '';
 
   if (limit == -1) {
-    limit = comments.length;
+    limit = commentsJson.length;
   } else {
-    limit = Math.min(limit, comments.length);
+    limit = Math.min(limit, commentsJson.length);
   }
 
-  for (var i = comments.length - limit; i < comments.length; i++) {
-    comments[i] = JSON.parse(comments[i]);
+  for (var i = commentsJson.length - limit; i < commentsJson.length; i++) {
+    commentsJson[i] = JSON.parse(commentsJson[i]);
 
-    commentsListElement.appendChild(createListElement(comments[i].username + ': ' + comments[i].comment));
+    const element = commentsJson[i].username + ': ' + commentsJson[i].comment;
+    commentsListElement.appendChild(createListElement(element));
   }
 }
 
@@ -63,4 +66,4 @@ function limitComments(limitObject) {
   const limit = limitObject.value;
 
   loadComments(limit);
-} 
+}
