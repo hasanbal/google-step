@@ -43,14 +43,15 @@ function popupDetail(id) {
 */
 function createListElement(text) {
   const liElement = document.createElement('li');
-  liElement.innerText = text;
+  liElement.innerHTML = text;
   return liElement;
 }
 
 /** Load comments from server
 * @param {int} limit limit of comments count
+* @param {int} admin Whether request came from admin panel or not.
 */
-async function loadComments(limit = -1) {
+async function loadComments(limit = -1, admin=0) {
   const response = await fetch('/comments');
   const comments = await response.text();
   const commentsJson = JSON.parse(comments);
@@ -67,9 +68,25 @@ async function loadComments(limit = -1) {
   for (let i = commentsJson.length - limit; i < commentsJson.length; i++) {
     commentsJson[i] = JSON.parse(commentsJson[i]);
 
-    const element = commentsJson[i].username + ': ' + commentsJson[i].comment;
+    let element = commentsJson[i].username + ': ' + commentsJson[i].comment;
+
+    if (admin == 1) {
+      element += ' <button onclick="deleteComment(';
+      element += commentsJson[i].timestamp;
+      element += ');">Delete</button>';
+    }
+
     commentsListElement.appendChild(createListElement(element));
   }
+}
+
+/** Delete comments.
+* @param {long} timestamp The timestamp of message.
+*/
+async function deleteComment(timestamp) {
+  const response = await fetch('/delete-comment?timestamp='+timestamp);
+  console.log(response);
+  location.reload();
 }
 
 /** Limit comments count.
