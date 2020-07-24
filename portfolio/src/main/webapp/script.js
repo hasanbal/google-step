@@ -49,6 +49,7 @@ function createListElement(text) {
 
 /** Load comments from server
 * @param {int} limit limit of comments count
+* @param {int} admin Whether request came from admin panel or not.
 */
 async function loadComments(limit = -1, admin=0) {
   const response = await fetch('/comments');
@@ -68,11 +69,13 @@ async function loadComments(limit = -1, admin=0) {
     commentsJson[i] = JSON.parse(commentsJson[i]);
 
     let element = commentsJson[i].username + ': ' + commentsJson[i].comment;
-    
+
     if (admin == 1) {
-      element += ' <button onclick="deleteComment(' +  commentsJson[i].timestamp + ');">Delete</button>';
+      element += ' <button onclick="deleteComment(';
+      element += commentsJson[i].timestamp;
+      element += ');">Delete</button>';
     }
-    
+
     commentsListElement.appendChild(createListElement(element));
   }
 }
@@ -80,7 +83,7 @@ async function loadComments(limit = -1, admin=0) {
 /** Delete comments.
 * @param {long} timestamp The timestamp of message.
 */
-async function deleteComment(timestamp){
+async function deleteComment(timestamp) {
   const response = await fetch('/delete-comment?timestamp='+timestamp);
   console.log(response);
   location.reload();
