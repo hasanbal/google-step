@@ -97,3 +97,30 @@ function limitComments(limitObject) {
 
   loadComments(limit);
 }
+
+/** Check login status and hide/show the comments. */
+async function checkLogin() {
+  const response = await fetch('/login-status');
+  const resText = await response.text();
+  const resJson = JSON.parse(resText);
+
+  const commmentsDiv = document.getElementById('comments-div');
+  const commentsError = document.getElementById('comments-error-div');
+  const commentsErrorMsg = document.getElementById('comments-error-msg');
+  const username = document.getElementById('username');
+  const logout = document.getElementById('logout');
+
+  if (resJson.login == 1) {
+    commmentsDiv.style.display= 'block';
+    commentsError.style.display= 'none';
+    username.innerText = resJson.email;
+    logout.innerHTML = '<br><a href="' + resJson.logoutUrl + '">Logout</a>';
+  } else {
+    commmentsDiv.style.display= 'none';
+    commentsError.style.display= 'block';
+
+    commentsErrorMsg.innerHTML = 'You should login to read and write comments.';
+    commentsErrorMsg.innerHTML += '<br><a href="' + resJson.loginUrl;
+    commentsErrorMsg.innerHTML += '">Login</a>';
+  }
+}

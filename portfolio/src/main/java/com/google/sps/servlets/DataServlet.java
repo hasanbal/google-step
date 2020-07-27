@@ -13,7 +13,8 @@
 // limitations under the License.
 
 package com.google.sps.servlets;
-
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -57,11 +58,16 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    UserService userService = UserServiceFactory.getUserService();
     String comment = getComment(request);
-    String username = getUsername(request);
+    String username = "anonymous";
 
     boolean readableComment = false;
     boolean readableUsername = false;
+
+    if (userService.isUserLoggedIn()) {
+      username = userService.getCurrentUser().getEmail();
+    }
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Entity commentEntity = new Entity("Comment");
