@@ -34,20 +34,20 @@ public class LoginStatus extends HttpServlet {
       String userEmail = userService.getCurrentUser().getEmail();
       String urlToRedirectToAfterUserLogsOut = "/";
       String logoutUrl = userService.createLogoutURL(urlToRedirectToAfterUserLogsOut);
-      
+
       String resJson = "{";
       resJson += "\"login\" : 1,";
       resJson += "\"email\" : \"" + userEmail + "\",";
-      resJson +=  "\"logoutUrl\" : \"" + logoutUrl + "\"}";
+      resJson += "\"logoutUrl\" : \"" + logoutUrl + "\"}";
 
       response.getWriter().println(resJson);
     } else {
       String urlToRedirectToAfterUserLogsIn = "/";
       String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
-      
+
       String resJson = "{";
       resJson += "\"login\" : 0,";
-      resJson +=  "\"loginUrl\" : \"" + loginUrl + "\"}";
+      resJson += "\"loginUrl\" : \"" + loginUrl + "\"}";
 
       response.getWriter().println(resJson);
     }
