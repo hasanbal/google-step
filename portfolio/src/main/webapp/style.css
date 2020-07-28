@@ -54,3 +54,11 @@ body {
 #detail-4 {
   visibility: hidden;
 }
+
+#comments-div {
+  display: none;
+}
+
+#comments-error-div {
+  display: none;
+}
