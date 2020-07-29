@@ -41,5 +41,3 @@ public class TranslateComment extends HttpServlet {
     response.getWriter().println(translatedText);
   }
 }
-
-
