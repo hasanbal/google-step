@@ -66,7 +66,7 @@ public class DataServlet extends HttpServlet {
     boolean readableComment = false;
     boolean readableUsername = false;
 
-    int limit = 100;
+    int limit = 10000;
     limit -= comment.length();
 
     if (doesLimitExceeded(limit) == true) {
