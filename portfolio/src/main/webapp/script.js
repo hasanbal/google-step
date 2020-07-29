@@ -14,9 +14,6 @@
 
 /* eslint-disable no-unused-vars */
 
-let lastLimit = -1;
-let lastLanguage = 'original';
-
 /** Get random image from gallery */
 function getRandomImage() {
   const imageId = Math.floor(Math.random() * 5) + 1;
@@ -103,9 +100,10 @@ async function deleteComment(timestamp) {
 */
 function limitComments(limitObject) {
   const limit = limitObject.value;
-  lastLimit = limit;
+  const langSelect = document.getElementById('language');
+  const curLang = langSelect.options[langSelect.selectedIndex].value;
 
-  loadComments(limit, 0, lastLanguage);
+  loadComments(limit, 0, curLang);
 }
 
 /** Check login status and hide/show the comments. */
@@ -155,7 +153,8 @@ async function translate(text, language) {
 */
 function changeLanguage(languageObject) {
   const language = languageObject.value;
-  lastLanguage = language;
+  const limitSelect = document.getElementById('limit');
+  const curLimit = limitSelect.options[limitSelect.selectedIndex].value;
 
-  loadComments(lastLimit, 0, language);
+  loadComments(curLimit, 0, language);
 }
