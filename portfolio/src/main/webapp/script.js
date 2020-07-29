@@ -141,7 +141,7 @@ async function checkLogin() {
   @param {String} language Language Code for translate
 */
 async function translate(text, language) {
-  const query = '/translate?text=' + text + '&language=' + language;
+  const query = '/translate-comment?text=' + text + '&language=' + language;
   const response = await fetch(query);
   const resText = await response.text();
 
