@@ -33,6 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/comments")
 public class DataServlet extends HttpServlet {
+  private int TOTAL_COMMENTS_SIZE_LIMIT = 10000;
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -66,10 +67,7 @@ public class DataServlet extends HttpServlet {
     boolean readableComment = false;
     boolean readableUsername = false;
 
-    int limit = 10000;
-    limit -= comment.length();
-
-    if (doesLimitExceeded(limit) == true) {
+    if (doesLimitExceeded(TOTAL_COMMENTS_SIZE_LIMIT - comment.length()) == true) {
       response.getWriter().println("The limit of total comments length is exceeded!");
       return;
     }
@@ -115,7 +113,7 @@ public class DataServlet extends HttpServlet {
   }
 
   private boolean doesLimitExceeded(int limit) {
-    Query query = new Query("Comment").addSort("timestamp", SortDirection.ASCENDING);
+    Query query = new Query("Comment");
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
     int totalCommentLenght = 0;
