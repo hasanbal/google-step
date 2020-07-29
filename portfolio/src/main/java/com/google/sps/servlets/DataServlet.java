@@ -67,7 +67,7 @@ public class DataServlet extends HttpServlet {
     boolean readableComment = false;
     boolean readableUsername = false;
 
-    if (doesLimitExceeded(TOTAL_COMMENTS_SIZE_LIMIT - comment.length()) == true) {
+    if (isLimitExceeded(TOTAL_COMMENTS_SIZE_LIMIT - comment.length()) == true) {
       response.getWriter().println("The limit of total comments length is exceeded!");
       return;
     }
@@ -112,7 +112,7 @@ public class DataServlet extends HttpServlet {
     response.sendRedirect("/index.html");
   }
 
-  private boolean doesLimitExceeded(int limit) {
+  private boolean isLimitExceeded(int limit) {
     Query query = new Query("Comment");
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
