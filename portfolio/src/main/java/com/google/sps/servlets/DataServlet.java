@@ -66,6 +66,14 @@ public class DataServlet extends HttpServlet {
     boolean readableComment = false;
     boolean readableUsername = false;
 
+    int limit = 100;
+    limit -= comment.length();
+
+    if (doesLimitExceeded(limit) == true) {
+      response.getWriter().println("The limit of total comments length is exceeded!");
+      return;
+    }
+
     if (userService.isUserLoggedIn()) {
       username = userService.getCurrentUser().getEmail();
     }
@@ -104,6 +112,23 @@ public class DataServlet extends HttpServlet {
 
     datastore.put(commentEntity);
     response.sendRedirect("/index.html");
+  }
+
+  private boolean doesLimitExceeded(int limit) {
+    Query query = new Query("Comment").addSort("timestamp", SortDirection.ASCENDING);
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
+    int totalCommentLenght = 0;
+
+    for (Entity entity : results.asIterable()) {
+      String comment = (String) entity.getProperty("comment");
+      totalCommentLenght += comment.length();
+    }
+
+    if (totalCommentLenght > limit) {
+      return true;
+    }
+    return false;
   }
 
   private String getComment(HttpServletRequest request) {
