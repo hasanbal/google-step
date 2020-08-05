@@ -14,8 +14,59 @@
 
 package com.google.sps;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    throw new UnsupportedOperationException("TODO: Implement this method.");
+    long duration = request.getDuration();
+    int[] minutes = new int[1441];
+    List<TimeRange> res = new ArrayList<>();
+    List<String> requestAttendees = new ArrayList(request.getAttendees());
+
+    for (Event event : events) {
+      int rangeStart = event.getWhen().start();
+      int rangeEnd = event.getWhen().end();
+
+      List<String> eventAttendees = new ArrayList(event.getAttendees());
+
+      int mustFill = 0;
+
+      for (String attendee : eventAttendees) {
+        if (requestAttendees.contains(attendee)) {
+          mustFill = 1;
+          break;
+        }
+      }
+      if (mustFill == 1) {
+        for (int i = rangeStart; i < rangeEnd; i++) {
+          minutes[i] = 1;
+        }
+      }
+    }
+
+    for (int i = 0; i < 1440; i++) {
+      if (minutes[i] == 0) {
+        int curStart = i;
+        int curEnd = i;
+
+        for (int j = i; j < 1440; j++) {
+          if (minutes[j] == 1) {
+            i = j;
+            break;
+          }
+          i = j;
+          curEnd = j;
+        }
+        int curDuration = curEnd - curStart + 1;
+
+        if (duration <= curDuration) {
+          TimeRange asd = TimeRange.fromStartDuration(curStart, curDuration);
+          res.add(asd);
+        }
+      }
+    }
+    return res;
   }
 }
