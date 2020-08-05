@@ -50,8 +50,9 @@ function createListElement(text) {
 /** Load comments from server
 * @param {int} limit limit of comments count
 * @param {int} admin Whether request came from admin panel or not.
+* @param {String} language Translate the comments by language code.
 */
-async function loadComments(limit = -1, admin=0) {
+async function loadComments(limit = -1, admin = 0, language = 'original') {
   const response = await fetch('/comments');
   const comments = await response.text();
   const commentsJson = JSON.parse(comments);
@@ -67,6 +68,11 @@ async function loadComments(limit = -1, admin=0) {
 
   for (let i = commentsJson.length - limit; i < commentsJson.length; i++) {
     commentsJson[i] = JSON.parse(commentsJson[i]);
+
+    if (language != 'original') {
+      commentsJson[i].comment =
+      await translate(commentsJson[i].comment, language);
+    }
 
     let element = commentsJson[i].username + ': ' + commentsJson[i].comment;
 
@@ -94,8 +100,10 @@ async function deleteComment(timestamp) {
 */
 function limitComments(limitObject) {
   const limit = limitObject.value;
+  const langSelect = document.getElementById('language');
+  const curLang = langSelect.options[langSelect.selectedIndex].value;
 
-  loadComments(limit);
+  loadComments(limit, 0, curLang);
 }
 
 /** Check login status and hide/show the comments. */
@@ -119,8 +127,34 @@ async function checkLogin() {
     commmentsDiv.style.display= 'none';
     commentsError.style.display= 'block';
 
-    commentsErrorMsg.innerHTML = 'You should login to read and write comments.';
-    commentsErrorMsg.innerHTML += '<br><a href="' + resJson.loginUrl;
-    commentsErrorMsg.innerHTML += '">Login</a>';
+    let error = 'You should login to read and write comments.';
+    error += ' <a href="';
+    error += String(resJson.loginUrl);
+    error += '">Login</a>';
+    commentsErrorMsg.innerHTML = error;
+    console.log(commentsErrorMsg);
   }
+}
+
+/** Translate the text
+  @param {String} text Text for translate
+  @param {String} language Language Code for translate
+*/
+async function translate(text, language) {
+  const query = '/translate-comment?text=' + text + '&language=' + language;
+  const response = await fetch(query);
+  const resText = await response.text();
+
+  return resText;
+}
+
+/** Change the selected language
+  @param {object} languageObject Language Selection
+*/
+function changeLanguage(languageObject) {
+  const language = languageObject.value;
+  const limitSelect = document.getElementById('limit');
+  const curLimit = limitSelect.options[limitSelect.selectedIndex].value;
+
+  loadComments(curLimit, 0, language);
 }

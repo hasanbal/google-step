@@ -14,8 +14,6 @@
 
 package com.google.sps;
 
-import java.util.Collection;
-
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     throw new UnsupportedOperationException("TODO: Implement this method.");

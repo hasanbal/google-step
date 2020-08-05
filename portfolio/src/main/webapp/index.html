@@ -29,6 +29,16 @@
 
 			<div id="comments-div">
 				<ul id="comments"></ul>
+				<span> View comments on
+				<select name="language" id="language" onchange="changeLanguage(this);">
+					<option value="original" selected="selected">Original</option>
+					<option value="en">English</option>
+					<option value="de">German</option>
+					<option value="ro">Romanian</option>
+					<option value="ru">Russian</option>
+					<option value="tr">Turkish</option>
+				</select>
+				language.</span><br>
 				<form method="POST" action="/comments">
 					<span> View Latest
 					<select name="limit" id="limit" onchange="limitComments(this);">
@@ -43,7 +53,7 @@
 
 					<span>Username:</span><p id="username"></p>
 					<span>Comment:<br></span>
-					<textarea name="comment"></textarea><br>
+					<textarea name="comment" maxlength="100"></textarea><br>
 					<br><input type="submit" value="Add Comment">
 					<p id="logout"></p>
 				</form>

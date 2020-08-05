@@ -33,6 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/comments")
 public class DataServlet extends HttpServlet {
+  private int TOTAL_COMMENTS_SIZE_LIMIT = 10000;
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -65,6 +66,11 @@ public class DataServlet extends HttpServlet {
 
     boolean readableComment = false;
     boolean readableUsername = false;
+
+    if (isLimitExceeded(TOTAL_COMMENTS_SIZE_LIMIT - comment.length()) == true) {
+      response.getWriter().println("The limit of total comments length is exceeded!");
+      return;
+    }
 
     if (userService.isUserLoggedIn()) {
       username = userService.getCurrentUser().getEmail();
@@ -104,6 +110,23 @@ public class DataServlet extends HttpServlet {
 
     datastore.put(commentEntity);
     response.sendRedirect("/index.html");
+  }
+
+  private boolean isLimitExceeded(int limit) {
+    Query query = new Query("Comment");
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
+    int totalCommentLenght = 0;
+
+    for (Entity entity : results.asIterable()) {
+      String comment = (String) entity.getProperty("comment");
+      totalCommentLenght += comment.length();
+    }
+
+    if (totalCommentLenght > limit) {
+      return true;
+    }
+    return false;
   }
 
   private String getComment(HttpServletRequest request) {
