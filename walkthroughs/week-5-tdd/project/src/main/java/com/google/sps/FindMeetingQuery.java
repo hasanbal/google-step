@@ -19,9 +19,12 @@ import java.util.Collection;
 import java.util.List;
 
 public final class FindMeetingQuery {
+
+  private static final int MINUTES_IN_ONE_DAY = 1440;
+
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     long duration = request.getDuration();
-    int[] minutes = new int[1441];
+    int[] minutes = new int[MINUTES_IN_ONE_DAY];
     List<TimeRange> res = new ArrayList<>();
     List<String> requestAttendees = new ArrayList(request.getAttendees());
 
@@ -31,27 +34,27 @@ public final class FindMeetingQuery {
 
       List<String> eventAttendees = new ArrayList(event.getAttendees());
 
-      int mustFill = 0;
+      boolean mustFill = false;
 
       for (String attendee : eventAttendees) {
         if (requestAttendees.contains(attendee)) {
-          mustFill = 1;
+          mustFill = true;
           break;
         }
       }
-      if (mustFill == 1) {
+      if (mustFill == true) {
         for (int i = rangeStart; i < rangeEnd; i++) {
           minutes[i] = 1;
         }
       }
     }
 
-    for (int i = 0; i < 1440; i++) {
+    for (int i = 0; i < MINUTES_IN_ONE_DAY; i++) {
       if (minutes[i] == 0) {
         int curStart = i;
         int curEnd = i;
 
-        for (int j = i; j < 1440; j++) {
+        for (int j = i; j < MINUTES_IN_ONE_DAY; j++) {
           if (minutes[j] == 1) {
             i = j;
             break;
@@ -62,8 +65,7 @@ public final class FindMeetingQuery {
         int curDuration = curEnd - curStart + 1;
 
         if (duration <= curDuration) {
-          TimeRange asd = TimeRange.fromStartDuration(curStart, curDuration);
-          res.add(asd);
+          res.add(TimeRange.fromStartDuration(curStart, curDuration));
         }
       }
     }
