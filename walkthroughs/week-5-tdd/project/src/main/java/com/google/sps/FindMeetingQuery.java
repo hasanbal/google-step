@@ -22,9 +22,59 @@ public final class FindMeetingQuery {
 
   private static final int MINUTES_IN_ONE_DAY = 1440;
 
+  public boolean isMinuteEmpty(int statusOfMinute) {
+    if (statusOfMinute == 0) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean isMandatoryFull(int statusOfMinute) {
+    if (statusOfMinute == 1) {
+      return true;
+    }
+    return false;
+  }
+
+  public List<TimeRange> findTimeRanges(
+      int[] takenMinutes, long duration, boolean ignoreOptionalAttendee) {
+
+    List<TimeRange> res = new ArrayList<>();
+    for (int i = 0; i < MINUTES_IN_ONE_DAY; i++) {
+      if (ignoreOptionalAttendee == false && isMinuteEmpty(takenMinutes[i])
+          || ignoreOptionalAttendee == true && !isMandatoryFull(takenMinutes[i])) {
+
+        int curStart = i;
+        int curEnd = i;
+
+        for (int j = i; j < MINUTES_IN_ONE_DAY; j++) {
+          if (ignoreOptionalAttendee == false && !isMinuteEmpty(takenMinutes[j])
+              || ignoreOptionalAttendee == true && isMandatoryFull(takenMinutes[j])) {
+
+            i = j;
+            break;
+          }
+          i = j;
+          curEnd = j;
+        }
+        int curDuration = curEnd - curStart + 1;
+
+        if (duration <= curDuration) {
+          res.add(TimeRange.fromStartDuration(curStart, curDuration));
+        }
+      }
+    }
+    return res;
+  }
+
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     long duration = request.getDuration();
-    int[] minutes = new int[MINUTES_IN_ONE_DAY];
+
+    // 0: not taken minutes
+    // 1: taken by at least one mandatory attendee
+    // 2: not taken by mandatory attendee but taken by at least one optional attendee
+    int[] takenMinutes = new int[MINUTES_IN_ONE_DAY];
+
     List<TimeRange> res = new ArrayList<>();
     List<String> requestAttendees = new ArrayList(request.getAttendees());
     List<String> optionalAttendees = new ArrayList(request.getOptionalAttendees());
@@ -49,7 +99,7 @@ public final class FindMeetingQuery {
 
       if (mustFill == true) {
         for (int i = rangeStart; i < rangeEnd; i++) {
-          minutes[i] = 1;
+          takenMinutes[i] = 1;
         }
       }
 
@@ -58,58 +108,20 @@ public final class FindMeetingQuery {
         // Otherwise I'm labeling with 2 because it's not preffered time.
         // Because there is optional attendee.
         for (int i = rangeStart; i < rangeEnd; i++) {
-          if (minutes[i] != 1) {
-            minutes[i] = 2;
+          if (takenMinutes[i] != 1) {
+            takenMinutes[i] = 2;
           }
         }
       }
     }
 
     // First try to add request optional attendees.
-    for (int i = 0; i < MINUTES_IN_ONE_DAY; i++) {
-      if (minutes[i] == 0) {
-        int curStart = i;
-        int curEnd = i;
-
-        for (int j = i; j < MINUTES_IN_ONE_DAY; j++) {
-          if (minutes[j] == 1 || minutes[j] == 2) {
-            i = j;
-            break;
-          }
-          i = j;
-          curEnd = j;
-        }
-        int curDuration = curEnd - curStart + 1;
-
-        if (duration <= curDuration) {
-          res.add(TimeRange.fromStartDuration(curStart, curDuration));
-        }
-      }
-    }
-
+    res = findTimeRanges(takenMinutes, duration, false);
     // Then if I can't find any timerange I will ignore optional attendees.
     if (res.isEmpty()) {
-      for (int i = 0; i < MINUTES_IN_ONE_DAY; i++) {
-        if (minutes[i] == 0 || minutes[i] == 2) {
-          int curStart = i;
-          int curEnd = i;
-
-          for (int j = i; j < MINUTES_IN_ONE_DAY; j++) {
-            if (minutes[j] == 1) {
-              i = j;
-              break;
-            }
-            i = j;
-            curEnd = j;
-          }
-          int curDuration = curEnd - curStart + 1;
-
-          if (duration <= curDuration) {
-            res.add(TimeRange.fromStartDuration(curStart, curDuration));
-          }
-        }
-      }
+      res = findTimeRanges(takenMinutes, duration, true);
     }
+
     return res;
   }
 }

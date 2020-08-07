@@ -315,7 +315,7 @@ public final class FindMeetingQueryTest {
   }
 
   @Test
-  public void customTest1() {
+  public void ignoreFullBusyOptionalAttendee() {
     // Have each person have different events. We should see two options because each person has
     // split the restricted times.
     //
@@ -351,7 +351,7 @@ public final class FindMeetingQueryTest {
   }
 
   @Test
-  public void customTest2() {
+  public void considerOptionalAttendee() {
     Collection<Event> events =
         Arrays.asList(
             new Event(
@@ -382,7 +382,7 @@ public final class FindMeetingQueryTest {
   }
 
   @Test
-  public void customTest3() {
+  public void ignoreOptionalAttendee() {
     Collection<Event> events =
         Arrays.asList(
             new Event(
@@ -410,7 +410,7 @@ public final class FindMeetingQueryTest {
   }
 
   @Test
-  public void customTest4() {
+  public void splitOptionsWithOptionalAttendees() {
     Collection<Event> events =
         Arrays.asList(
             new Event(
@@ -438,7 +438,7 @@ public final class FindMeetingQueryTest {
   }
 
   @Test
-  public void customTest5() {
+  public void noOptionsWithOptionalAttendee() {
     Collection<Event> events =
         Arrays.asList(
             new Event(
