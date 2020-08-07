@@ -27,6 +27,7 @@ public final class FindMeetingQuery {
     int[] minutes = new int[MINUTES_IN_ONE_DAY];
     List<TimeRange> res = new ArrayList<>();
     List<String> requestAttendees = new ArrayList(request.getAttendees());
+    List<String> optionalAttendees = new ArrayList(request.getOptionalAttendees());
 
     for (Event event : events) {
       int rangeStart = event.getWhen().start();
@@ -35,27 +36,43 @@ public final class FindMeetingQuery {
       List<String> eventAttendees = new ArrayList(event.getAttendees());
 
       boolean mustFill = false;
+      boolean optionalFill = false;
 
       for (String attendee : eventAttendees) {
         if (requestAttendees.contains(attendee)) {
           mustFill = true;
-          break;
+        }
+        if (optionalAttendees.contains(attendee)) {
+          optionalFill = true;
         }
       }
+
       if (mustFill == true) {
         for (int i = rangeStart; i < rangeEnd; i++) {
           minutes[i] = 1;
         }
       }
+
+      if (mustFill == false && optionalFill == true) {
+        // If there is any previous mustFill I'm not changing.
+        // Otherwise I'm labeling with 2 because it's not preffered time.
+        // Because there is optional attendee.
+        for (int i = rangeStart; i < rangeEnd; i++) {
+          if (minutes[i] != 1) {
+            minutes[i] = 2;
+          }
+        }
+      }
     }
 
+    // First try to add request optional attendees.
     for (int i = 0; i < MINUTES_IN_ONE_DAY; i++) {
       if (minutes[i] == 0) {
         int curStart = i;
         int curEnd = i;
 
         for (int j = i; j < MINUTES_IN_ONE_DAY; j++) {
-          if (minutes[j] == 1) {
+          if (minutes[j] == 1 || minutes[j] == 2) {
             i = j;
             break;
           }
@@ -66,6 +83,30 @@ public final class FindMeetingQuery {
 
         if (duration <= curDuration) {
           res.add(TimeRange.fromStartDuration(curStart, curDuration));
+        }
+      }
+    }
+
+    // Then if I can't find any timerange I will ignore optional attendees.
+    if (res.isEmpty()) {
+      for (int i = 0; i < MINUTES_IN_ONE_DAY; i++) {
+        if (minutes[i] == 0 || minutes[i] == 2) {
+          int curStart = i;
+          int curEnd = i;
+
+          for (int j = i; j < MINUTES_IN_ONE_DAY; j++) {
+            if (minutes[j] == 1) {
+              i = j;
+              break;
+            }
+            i = j;
+            curEnd = j;
+          }
+          int curDuration = curEnd - curStart + 1;
+
+          if (duration <= curDuration) {
+            res.add(TimeRange.fromStartDuration(curStart, curDuration));
+          }
         }
       }
     }
